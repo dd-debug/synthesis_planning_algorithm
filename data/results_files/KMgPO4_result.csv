@@ -1,0 +1,3 @@
+,target,reactants,reaction_energy(eV/atom),inverse_hull_energy(eV/atom),reaction,competing phases
+0,KMgPO4,"['MgO', 'KPO3']",-0.10854472857145751,-0.10854472857145758,MgO + KPO3 -> KMgPO4,[]
+1,KMgPO4,"['K3PO4', 'Mg3(PO4)2']",-0.0370625407143095,-0.037062540714310366,0.3333 K3PO4 + 0.3333 Mg3(PO4)2 -> KMgPO4,[]

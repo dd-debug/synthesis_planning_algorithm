@@ -1,0 +1,3 @@
+,target,reactants,reaction_energy(eV/atom),inverse_hull_energy(eV/atom),reaction,competing phases
+0,Li3Sc2(PO4)3,"['Sc2O3', 'LiPO3']",-0.10212501197491797,-0.034161004524869476,Sc2O3 + 3 LiPO3 -> Li3Sc2(PO4)3,"[['LiScP2O7', 'Li3PO4'], ['Li4P2O7', 'LiScP2O7']]"
+1,Li3Sc2(PO4)3,"['ScPO4', 'Li3PO4']",-0.012807472375034563,-0.012807472375034656,2 ScPO4 + Li3PO4 -> Li3Sc2(PO4)3,[]

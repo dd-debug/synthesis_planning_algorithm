@@ -1,0 +1,4 @@
+,target,reactants,reaction_energy(eV/atom),inverse_hull_energy(eV/atom),reaction,competing phases
+0,BaAl2(SiO4)2,"['SiO2', 'BaAl2O4']",-0.08967180692307783,-0.08967180692307863,2 SiO2 + BaAl2O4 -> BaAl2(SiO4)2,[]
+1,BaAl2(SiO4)2,"['Al2O3', 'BaSi2O5']",-0.06825677961539023,-0.06825677961538901,Al2O3 + BaSi2O5 -> BaAl2(SiO4)2,[]
+2,BaAl2(SiO4)2,"['Al2SiO5', 'BaSiO3']",-0.06823911660261386,-0.06823911660261395,Al2SiO5 + BaSiO3 -> BaAl2(SiO4)2,[]

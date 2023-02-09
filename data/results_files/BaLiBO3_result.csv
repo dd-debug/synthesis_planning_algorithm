@@ -1,0 +1,4 @@
+,target,reactants,reaction_energy(eV/atom),inverse_hull_energy(eV/atom),reaction,competing phases
+0,BaLiBO3,"['LiBO2', 'BaO']",-0.19232405708334843,-0.15303256599358317,LiBO2 + BaO -> BaLiBO3,"[['Ba2Li(BO2)5', 'Li6B4O9']]"
+1,BaLiBO3,"['Li2O', 'Ba2B2O5']",-0.08728973645832776,-0.08728973645832827,0.5 Li2O + 0.5 Ba2B2O5 -> BaLiBO3,[]
+2,BaLiBO3,"['Ba3(BO3)2', 'Li3BO3']",-0.03953985888888068,-0.03953985888888045,0.3333 Ba3(BO3)2 + 0.3333 Li3BO3 -> BaLiBO3,[]
