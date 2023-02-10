@@ -29,7 +29,7 @@ To use this algorithm, you need to generate an API key. This algorithm is using 
 - Go [here](https://legacy.materialsproject.org/open) to get a legacy Materials Project API
 - Go [here](https://next-gen.materialsproject.org/api) to get a new Materials Project API
 
-After you get a API Key, copy it and go to `synthesis_planning.setting` python file,  paste its string to `MPI_KEY` global variable:
+After you get a API Key, copy it and go to `synthesis_planning.settings` python file,  paste its string to `MPI_KEY` global variable:
 
 ```python
 MPI_KEY = 'Your Materials Project API key'
