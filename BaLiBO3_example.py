@@ -9,7 +9,7 @@ from synthesis_planning.interfacial_pdplotter import InterReactions, Inter_PDPlo
 from pymatgen.analysis.reaction_calculator import ComputedReaction
 from pymatgen.analysis.phase_diagram import CompoundPhaseDiagram
 
-target = "BaAl2Si2O8"
+target = "BaLiBO3"
 
 # get the optimal synthesis recipe for a target material
 sp = SynthesisPathways(target,
