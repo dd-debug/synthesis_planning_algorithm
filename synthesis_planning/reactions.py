@@ -26,7 +26,8 @@ def get_possible_reactions(precursors, product):
         try:
             reactants = list(reactants)
             reaction = ComputedReaction(reactants, product)
-            reactions.append(reaction)
+            if len(reaction.reactants) == 2 and len(reaction.products)==1:
+                reactions.append(reaction)
         except:
             SkipReaction('Reaction can not be compositionally balanced')
     return reactions
@@ -105,5 +106,5 @@ class Reaction():
         f"reaction: {self.reaction.__str__()}",
         f"competing phases: {self.competing_phases_names}"
         ]
-        return "\n".join(outputs) + "\n"
+        return "\n"+"\n".join(outputs)
         

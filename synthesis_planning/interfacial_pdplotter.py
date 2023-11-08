@@ -191,11 +191,12 @@ class Inter_PDPlotter(PDPlotter):
             y.append(y_coord)
             textpositions.append(textposition)
 
-            if self.target_entry != None:
-                if entry.name == self.target_entry.name:
-                    text.append(self.target_entry.name)
-                else:
-                    text.append("")
+            if self.emphasize_entries != None:
+                for target_entry in self.emphasize_entries:
+                    if entry.name == target_entry.name:
+                        text.append(target_entry.name)
+                    else:
+                        text.append("")
             else:
 
                 if self.reactions_dict[entry.name]._reactant_entries == \

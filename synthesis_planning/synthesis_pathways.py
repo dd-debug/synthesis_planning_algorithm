@@ -11,7 +11,8 @@ import os
 import math
 import pandas as pds
 
-from synthesis_planning.materials_entries import getOrigStableEntriesList
+# from synthesis_planning.materials_entries import getOrigStableEntriesList
+from myResearch.getOrigStableEntriesList import getOrigStableEntriesList
 from synthesis_planning.reactions import get_possible_reactions, Reaction
 
 class SynthesisPathways():
@@ -54,8 +55,10 @@ class SynthesisPathways():
         self.target = target
         
         self.reactions = get_possible_reactions(entries, [target])
+
         print(f"all possible pairwise reactions: {len(self.reactions)}")
         selected_reactions = self.get_target_deepest_reactions()
+        self.all_pairwise_reactions = self.get_all_pairwise_reactions_info()
         self.selected_reactions = self.save_most_energy_for_last_step(selected_reactions)
         
         if selected_reactions_to_csv:
@@ -110,6 +113,7 @@ class SynthesisPathways():
         pd = self.pd
         selected_reactions = []
         for reaction in self.reactions:
+
             reactants = reaction._reactant_entries
             # we only consider pairwise reactions
             comp1 = reactants[0].composition
@@ -118,10 +122,10 @@ class SynthesisPathways():
             if any(reactant.name in self.exclude_reactants for reactant in reactants):
                 continue
             new_entries, products = self.construct_kinks_entries(pd, comp1, comp2, self.target)
-            
+
             cpd = CompoundPhaseDiagram(new_entries,[comp1,comp2])
             lowest_entry, depth = self.get_lowest_entry_and_energy(cpd)
-            
+
             if norm_formula(lowest_entry.name) == norm_formula(self.target.name):
                 invE = get_inverse_hull_energy(lowest_entry, cpd)
                 selected_reactions.append(
@@ -136,7 +140,42 @@ class SynthesisPathways():
                     ))
                 
         return selected_reactions
-        
+    
+    def get_all_pairwise_reactions_info(self):
+        pd = self.pd
+        all_pairwise_reactions = []
+        for reaction in self.reactions:
+            # print(reaction)
+            reactants = reaction._reactant_entries
+            # we only consider pairwise reactions
+            comp1 = reactants[0].composition
+            comp2 = reactants[1].composition
+            # exclude reactions with specific reactants
+            if any(reactant.name in self.exclude_reactants for reactant in reactants):
+                continue
+            new_entries, products = self.construct_kinks_entries(pd, comp1, comp2, self.target)
+            
+            cpd = CompoundPhaseDiagram(new_entries,[comp1,comp2])
+            depth = reaction.calculated_reaction_energy/Composition(self.target.name).num_atoms
+            # if norm_formula(lowest_entry.name) == norm_formula(self.target.name):
+            
+            for e in cpd.stable_entries:
+                if norm_formula(e.name) == norm_formula(self.target.name):
+                    target_entry = e
+            invE = get_inverse_hull_energy(target_entry, cpd)
+            all_pairwise_reactions.append(
+                Reaction(
+                     self.target,
+                     reactants, 
+                     depth, 
+                     invE,
+                     reaction,
+                     new_entries,
+                     products,                         
+                ))
+                
+        return all_pairwise_reactions
+    
     def remove_original_target_entry_if_exists_in_hull(self, entries, formula):
         """
         Remove the entry of the formula if it is a stable material in the 
@@ -234,7 +273,8 @@ def get_inverse_hull_energy(cpd_entry, cpd):
     for e in cpd.stable_entries:
         if e.name != cpd_entry.name:
             mod_entries.append(e)
-    mod_cpd = PhaseDiagram(mod_entries)
+    mod_cpd = PhaseDiagram(mod_entries,cpd.species_mapping.values())
+
     invE = mod_cpd.get_decomp_and_e_above_hull(cpd_entry, 
                                                allow_negative=True)[1]
     return invE
