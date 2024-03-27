@@ -42,3 +42,5 @@ Please run `BaLiBO3_example.py` to see how to use this algorithm. You use `synth
 ## Citation
 
 This synthesis planning algorithm is created by Jiadong Chen, Wenhao Sun in University of Michigan. If you use this synthesis planning algorithm, we kindly ask you to cite the following publication:
+
+**Chen, Jiadong, et al. "Navigating phase diagram complexity to guide robotic inorganic materials synthesis." *arXiv preprint arXiv:2304.00743* (2023).**
