@@ -11,8 +11,8 @@ import os
 import math
 import pandas as pds
 
-# from synthesis_planning.materials_entries import getOrigStableEntriesList
-from myResearch.getOrigStableEntriesList import getOrigStableEntriesList
+from synthesis_planning.materials_entries import getOrigStableEntriesList
+# from myResearch.getOrigStableEntriesList import getOrigStableEntriesList
 from synthesis_planning.reactions import get_possible_reactions, Reaction
 
 class SynthesisPathways():
