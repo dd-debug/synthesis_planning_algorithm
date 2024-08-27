@@ -103,8 +103,11 @@ class Inter_PDPlotter(PDPlotter):
         """
         
         filename = kwargs.pop('filename', None)
+        print(*args)
+        print(**kwargs)
 
         fig = self.get_plot(*args, **kwargs)
+        
         if self.emphasize_entries:
             for target_entry in self.emphasize_entries:
                 for coords, entry in self.pd_plot_data[1].items():
@@ -295,7 +298,84 @@ class Inter_PDPlotter(PDPlotter):
             stable_labels_plot = go.Scatter3d(x=x, y=y, z=z, **plot_args)
 
         return stable_labels_plot
+    def get_plot(
+        self,
+        label_stable: bool = True,
+        label_unstable: bool = True,
 
+        energy_colormap=None,
+        process_attributes: bool = False,
+        plt=None,
+        label_uncertainties: bool = False,
+        fill: bool = True
+    ):
+        """
+        Args:
+            label_stable: Whether to label stable compounds.
+            label_unstable: Whether to label unstable compounds.
+            ordering: Ordering of vertices, given as a list ['Up',
+                'Left','Right'] (matplotlib only).
+            energy_colormap: Colormap for coloring energy (matplotlib only).
+            process_attributes: Whether to process the attributes (matplotlib only).
+            plt: Existing matplotlib.pyplot object if plotting multiple phase diagrams
+                (matplotlib only).
+            label_uncertainties: Whether to add error bars to the hull.
+                For binaries, this also shades the hull with the uncertainty window.
+                (plotly only).
+            fill: Whether to shade the hull. For ternary_2d and quaternary plots, this
+                colors facets arbitrarily for visual clarity. For ternary_3d plots, this
+                shades the hull by formation energy (plotly only).
+            highlight_entries: Entries to highlight in the plot (plotly only). This will
+                create a new marker trace that is separate from the other entries.
+
+        Returns:
+            go.Figure (backend="plotly") or matplotlib.pyplot (backend="matplotlib")
+        """
+        fig = None
+        data = []
+
+        if self.backend == "plotly":
+            if self._dim != 1:
+                data.append(self._create_plotly_lines())
+
+            stable_marker_plot, unstable_marker_plot = self._create_plotly_markers(
+                label_uncertainties,
+            )
+
+            if self._dim == 2 and label_uncertainties:
+                data.append(self._create_plotly_uncertainty_shading(stable_marker_plot))
+
+            if self._dim == 3 and self.ternary_style == "3d":
+                data.append(self._create_plotly_ternary_support_lines())
+
+            if self._dim != 1 and not (self._dim == 3 and self.ternary_style == "2d"):
+                data.append(self._create_plotly_stable_labels(label_stable))
+
+            if fill and self._dim in [3, 4]:
+                data.extend(self._create_plotly_fill())
+
+            data.extend([stable_marker_plot, unstable_marker_plot])
+
+
+
+            fig = go.Figure(data=data)
+            fig.layout = self._create_plotly_figure_layout()
+            fig.update_layout(coloraxis_colorbar={"yanchor": "top", "y": 0.05, "x": 1})
+
+        elif self.backend == "matplotlib":
+            if self._dim <= 3:
+                fig = self._get_matplotlib_2d_plot(
+                    label_stable,
+                    label_unstable,
+
+                    energy_colormap,
+                    plt=plt,
+                    process_attributes=process_attributes,
+                )
+            elif self._dim == 4:
+                fig = self._get_matplotlib_3d_plot(label_stable)
+
+        return fig
     def _create_plotly_markers(self, label_uncertainties=False):
         """
         Creates stable and unstable marker plots for overlaying on the phase diagram.
